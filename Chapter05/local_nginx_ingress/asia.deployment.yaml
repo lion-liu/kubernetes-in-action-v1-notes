@@ -18,13 +18,13 @@ spec:
   selector:                     # 标签选择器,通过app:asia来识别该Deployment中Pod启动的数量,与RS,RC下启动的同Label的pod无关,不受影响.
     matchLabels:
       app: asia
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+  strategy:                     #升级策略
+    rollingUpdate:              #滚动升级
+      maxSurge: 25%             #超出期望数最大的百分比,如replicas=4,则滚动升级时最多会有1个pod超出,即滚动升级期间该Deployment可能出现5个pod
+      maxUnavailable: 25%       #最大可以停用pod的百分比,不可用的pod不可以超过25%
+    type: RollingUpdate         #滚动升级
   template:
-    metadata:
+    metadata:                   #该deployment下启动的pod的基础数据
       creationTimestamp: null
       labels:
         app: asia
@@ -57,10 +57,10 @@ spec:
         volumeMounts:
         - mountPath: /html
           name: html
-      restartPolicy: Always
-      schedulerName: default-scheduler
+      restartPolicy: Always                     #pod失败时重启策略,永远重启
+      schedulerName: default-scheduler          #执行该Deploment调度任务的调度器名称,默认调度器
       securityContext: {}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 30         #容器在终止前等待的格林时间:30秒
       volumes:
       - emptyDir: {}
         name: html
