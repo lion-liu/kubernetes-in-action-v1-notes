@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: asia
+  namespace: world
+spec:
+  replicas: 2                   # Pod副本数量
+  # revisionHistoryLimit: 10      #历史版本限制,保留10个回滚记录
+  selector:                     # 标签选择器,通过app:asia来识别该Deployment中Pod启动的数量,与RS,RC下启动的同Label的pod无关,不受影响.
+    matchLabels:
+      app: asia
+  template:
+    metadata:
+      labels:
+        app: asia
+    spec:
+      containers:
+      - name: asia
+        image: luksa/kubia
